@@ -165,4 +165,15 @@ public class Robot : MonoBehaviour
             happiness = 100;
         }
     }
+
+    public void SaveRobot()
+    {
+        if (!_serverTime)
+        {
+            UpdateDevice();
+        }
+
+        PlayerPrefs.SetInt("_hunger", _hunger);
+        PlayerPrefs.SetInt("_happiness", _happiness);
+    }
 }

@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         nameText.GetComponent<Text>().text = robot.GetComponent<Robot>().name;
     }
 
-    public void triggerNamePanel(bool b)
+    public void TriggerNamePanel(bool b)
     {
         namePanel.SetActive(!namePanel.activeInHierarchy);
 
@@ -36,6 +36,27 @@ public class GameManager : MonoBehaviour
         {
             robot.GetComponent<Robot>().name = nameInput.GetComponent<InputField>().text;
             PlayerPrefs.SetString("name", robot.GetComponent<Robot>().name);
+        }
+    }
+
+    public void ButtonBehavior(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                robot.GetComponent<Robot>().SaveRobot();
+                Application.Quit();
+                break;
+            default:
+                break;
         }
     }
 }
