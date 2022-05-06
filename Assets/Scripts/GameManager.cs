@@ -7,7 +7,12 @@ public class GameManager : MonoBehaviour
 {
     public GameObject hungerText;
     public GameObject happinessText;
+    public GameObject nameText;
+
     public GameObject robot;
+
+    public GameObject namePanel;
+    public GameObject nameInput;
 
     // Start is called before the first frame update
     void Start()
@@ -20,5 +25,17 @@ public class GameManager : MonoBehaviour
     {
         happinessText.GetComponent<Text>().text = robot.GetComponent<Robot>().happiness.ToString();
         hungerText.GetComponent<Text>().text = robot.GetComponent<Robot>().hunger.ToString();
+        nameText.GetComponent<Text>().text = robot.GetComponent<Robot>().name;
+    }
+
+    public void triggerNamePanel(bool b)
+    {
+        namePanel.SetActive(!namePanel.activeInHierarchy);
+
+        if (b)
+        {
+            robot.GetComponent<Robot>().name = nameInput.GetComponent<InputField>().text;
+            PlayerPrefs.SetString("name", robot.GetComponent<Robot>().name);
+        }
     }
 }

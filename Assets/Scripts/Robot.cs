@@ -10,13 +10,52 @@ public class Robot : MonoBehaviour
     private int _hunger;
     [SerializeField]
     private int _happiness;
+    [SerializeField]
+    private string _name;
 
+    private int _clickCount;
     private bool _serverTime;
 
     void Start()
     {
         PlayerPrefs.SetString("then", "05/05/2022 11:20:12");
         UpdateStatus();
+
+        if (!PlayerPrefs.HasKey("name"))
+        {
+            PlayerPrefs.SetString("name", "Robot");
+        }
+
+        _name = PlayerPrefs.GetString("name");
+    }
+
+    void Update()
+    {
+        GetComponent<Animator>().SetBool("jump", gameObject.transform.position.y > -2.9f);
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("Clicked");
+            // To grab the mouse location, where clicked
+            Vector2 v = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+            // To check what was clicked
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(v), Vector2.zero);
+
+            if (hit)
+            {
+                if (hit.transform.gameObject.tag == "Robot")
+                {
+                    _clickCount++;
+                    if (_clickCount >= 3)
+                    {
+                        _clickCount = 0;
+                        UpdateHappiness(1);
+                        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 1000000));
+                    }
+                }
+            }
+        }
     }
 
     void UpdateStatus()
@@ -59,9 +98,6 @@ public class Robot : MonoBehaviour
         {
             _happiness = 0;
         }
-
-        // Debug.Log(GetTimeSpan().ToString());
-        // Debug.Log(GetTimeSpan().TotalHours);
 
         if (_serverTime)
         {
@@ -113,5 +149,20 @@ public class Robot : MonoBehaviour
     {
         get { return _happiness; }
         set { _happiness = value; }
+    }
+
+    public string name
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+
+    public void UpdateHappiness(int i)
+    {
+        happiness += i;
+        if (happiness > 100)
+        {
+            happiness = 100;
+        }
     }
 }
